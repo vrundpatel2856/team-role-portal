@@ -6,8 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { UserRole } from "@/types/user";
-import { FileText, User, Users, Shield } from "lucide-react";
+import { FileText } from "lucide-react";
 import { toast } from "sonner";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -16,10 +17,10 @@ const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const roles: { value: UserRole; label: string; icon: typeof User; description: string }[] = [
-    { value: "employee", label: "Employee", icon: User, description: "Submit and track requests" },
-    { value: "manager", label: "Manager", icon: Users, description: "Review and approve requests" },
-    { value: "admin", label: "Admin", icon: Shield, description: "Manage system and users" },
+  const roles: { value: UserRole; label: string }[] = [
+    { value: "employee", label: "Employee" },
+    { value: "manager", label: "Manager" },
+    { value: "admin", label: "Admin" },
   ];
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -59,33 +60,24 @@ const Login = () => {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="space-y-3">
+          {/* Role dropdown */}
+          <div className="space-y-2">
             <Label className="text-sm font-semibold">Select Role</Label>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-              {roles.map((role) => {
-                const Icon = role.icon;
-                return (
-                  <button
-                    key={role.value}
-                    type="button"
-                    onClick={() => setSelectedRole(role.value)}
-                    className={`p-4 rounded-lg border-2 transition-all hover:scale-105 ${
-                      selectedRole === role.value
-                        ? "border-primary bg-primary/5 shadow-md"
-                        : "border-border hover:border-primary/50"
-                    }`}
-                  >
-                    <Icon className={`h-8 w-8 mx-auto mb-2 ${
-                      selectedRole === role.value ? "text-primary" : "text-muted-foreground"
-                    }`} />
-                    <p className="font-semibold text-sm">{role.label}</p>
-                    <p className="text-xs text-muted-foreground mt-1">{role.description}</p>
-                  </button>
-                );
-              })}
-            </div>
+            <Select onValueChange={(val) => setSelectedRole(val as UserRole)}>
+              <SelectTrigger className="h-11">
+                <SelectValue placeholder="Choose a role" />
+              </SelectTrigger>
+              <SelectContent>
+                {roles.map((role) => (
+                  <SelectItem key={role.value} value={role.value}>
+                    {role.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
+          {/* Login form */}
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
