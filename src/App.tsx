@@ -5,6 +5,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import Login from "./pages/Login";
+import EmployeeDashboard from "./pages/EmployeeDashboard";
+import ManagerDashboard from "./pages/ManagerDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 import Dashboard from "./pages/Dashboard";
 import Approvals from "./pages/Approvals";
 import Users from "./pages/Users";
@@ -16,6 +19,21 @@ const queryClient = new QueryClient();
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user } = useAuth();
   return user ? <>{children}</> : <Navigate to="/login" />;
+};
+
+const RoleDashboard = () => {
+  const { user } = useAuth();
+  
+  switch (user?.role) {
+    case "admin":
+      return <AdminDashboard />;
+    case "manager":
+      return <ManagerDashboard />;
+    case "employee":
+      return <EmployeeDashboard />;
+    default:
+      return <Dashboard />;
+  }
 };
 
 const App = () => (
@@ -31,7 +49,7 @@ const App = () => (
               path="/"
               element={
                 <ProtectedRoute>
-                  <Navigate to="/dashboard" />
+                  <RoleDashboard />
                 </ProtectedRoute>
               }
             />
@@ -39,7 +57,7 @@ const App = () => (
               path="/dashboard"
               element={
                 <ProtectedRoute>
-                  <Dashboard />
+                  <RoleDashboard />
                 </ProtectedRoute>
               }
             />
