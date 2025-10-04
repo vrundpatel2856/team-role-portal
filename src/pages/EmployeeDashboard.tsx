@@ -1,5 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -13,8 +12,6 @@ import { mockApprovals } from "@/data/mockData";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { useAuth } from "@/contexts/AuthContext";
-import { Plus, FileText } from "lucide-react";
-import { toast } from "sonner";
 
 const EmployeeDashboard = () => {
   const { user } = useAuth();
@@ -22,77 +19,65 @@ const EmployeeDashboard = () => {
   // Filter to show only current employee's requests (for demo, show all)
   const myRequests = mockApprovals;
 
-  const handleNewRequest = () => {
-    toast.success("New request form opened");
-  };
-
   return (
     <SidebarProvider>
       <div className="flex min-h-screen w-full">
         <AppSidebar />
-        <main className="flex-1 bg-muted/20">
-          <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <div className="flex h-16 items-center justify-between px-6">
-              <div className="flex items-center gap-4">
-                <SidebarTrigger />
-                <div>
-                  <h1 className="text-2xl font-bold">Employee's View</h1>
-                  <p className="text-sm text-muted-foreground">
-                    Track your approval requests
-                  </p>
-                </div>
-              </div>
-              <Button onClick={handleNewRequest} className="gap-2">
-                <Plus className="h-4 w-4" />
-                New Request
-              </Button>
+        <main className="flex-1 bg-background">
+          <header className="border-b bg-background">
+            <div className="flex h-14 items-center px-6">
+              <SidebarTrigger />
+              <h1 className="ml-4 text-lg font-semibold">Employee's View</h1>
             </div>
           </header>
 
           <div className="p-6">
-            <Card className="bg-gradient-card shadow-lg">
-              <CardHeader>
-                <div className="flex items-center gap-2">
-                  <FileText className="h-5 w-5 text-primary" />
-                  <div>
-                    <CardTitle>My Approval Requests</CardTitle>
-                    <CardDescription>
-                      View all your submitted requests and their status
-                    </CardDescription>
-                  </div>
-                </div>
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base font-medium">
+                  Your approval requests history for past 6 months of calendar year date to current date {new Date().getFullYear()}
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="rounded-lg border overflow-hidden bg-background">
+                <div className="text-sm text-muted-foreground mb-4">
+                  (Expand the detailed list of the employee and approvals selected)
+                </div>
+                <div className="rounded-md border">
                   <Table>
                     <TableHeader>
                       <TableRow className="bg-muted/50">
-                        <TableHead className="font-semibold">Request ID</TableHead>
-                        <TableHead className="font-semibold">Request Type</TableHead>
-                        <TableHead className="font-semibold">Date</TableHead>
-                        <TableHead className="font-semibold">Description</TableHead>
-                        <TableHead className="font-semibold">Amount</TableHead>
-                        <TableHead className="font-semibold">Status</TableHead>
-                        <TableHead className="font-semibold">Approver</TableHead>
+                        <TableHead className="w-[120px]">Employee Name</TableHead>
+                        <TableHead className="w-[100px]">Request ID</TableHead>
+                        <TableHead>Date</TableHead>
+                        <TableHead>Request Type</TableHead>
+                        <TableHead>Amount</TableHead>
+                        <TableHead>Description</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Approver</TableHead>
+                        <TableHead className="w-[100px]">Priority</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {myRequests.map((request) => (
-                        <TableRow key={request.id} className="hover:bg-muted/30">
-                          <TableCell className="font-mono text-sm">
+                        <TableRow key={request.id}>
+                          <TableCell className="font-medium">{request.employeeName}</TableCell>
+                          <TableCell className="font-mono text-xs">
                             #{request.id.padStart(4, '0')}
                           </TableCell>
-                          <TableCell className="font-medium">{request.requestType}</TableCell>
-                          <TableCell>{request.requestDate}</TableCell>
-                          <TableCell className="max-w-xs">
-                            <p className="truncate">{request.description}</p>
-                          </TableCell>
+                          <TableCell className="text-sm">{request.requestDate}</TableCell>
+                          <TableCell>{request.requestType}</TableCell>
                           <TableCell>{request.amount || "-"}</TableCell>
+                          <TableCell className="max-w-[200px]">
+                            <p className="truncate text-sm">{request.description}</p>
+                          </TableCell>
                           <TableCell>
                             <StatusBadge status={request.status} />
                           </TableCell>
-                          <TableCell className="text-muted-foreground">
-                            {request.approver || "Pending"}
+                          <TableCell className="text-sm text-muted-foreground">
+                            {request.approver || "-"}
+                          </TableCell>
+                          <TableCell>
+                            <span className="text-xs capitalize">{request.priority}</span>
                           </TableCell>
                         </TableRow>
                       ))}

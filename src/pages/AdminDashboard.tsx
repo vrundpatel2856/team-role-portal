@@ -1,5 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -11,8 +10,6 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
-import { Route, Plus, Users, CheckCircle } from "lucide-react";
-import { toast } from "sonner";
 
 interface ApprovalRoute {
   id: string;
@@ -67,110 +64,43 @@ const AdminDashboard = () => {
     },
   ];
 
-  const handleCreateRoute = () => {
-    toast.success("Create new approval route");
-  };
-
   return (
     <SidebarProvider>
       <div className="flex min-h-screen w-full">
         <AppSidebar />
-        <main className="flex-1 bg-muted/20">
-          <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <div className="flex h-16 items-center justify-between px-6">
-              <div className="flex items-center gap-4">
-                <SidebarTrigger />
-                <div>
-                  <h1 className="text-2xl font-bold">Admin View</h1>
-                  <p className="text-sm text-muted-foreground">
-                    Manage approval routes and system configuration
-                  </p>
-                </div>
-              </div>
-              <Button onClick={handleCreateRoute} className="gap-2">
-                <Plus className="h-4 w-4" />
-                New Approval Route
-              </Button>
+        <main className="flex-1 bg-background">
+          <header className="border-b bg-background">
+            <div className="flex h-14 items-center px-6">
+              <SidebarTrigger />
+              <h1 className="ml-4 text-lg font-semibold">Admin View (Approval routes)</h1>
             </div>
           </header>
 
-          <div className="p-6 space-y-6">
-            {/* Stats Cards */}
-            <div className="grid gap-4 md:grid-cols-3">
-              <Card className="bg-gradient-card shadow-md">
-                <CardHeader className="flex flex-row items-center justify-between pb-2">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">
-                    Total Routes
-                  </CardTitle>
-                  <div className="p-2 rounded-lg bg-primary/10">
-                    <Route className="h-4 w-4 text-primary" />
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold">{approvalRoutes.length}</div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-gradient-card shadow-md">
-                <CardHeader className="flex flex-row items-center justify-between pb-2">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">
-                    Active Routes
-                  </CardTitle>
-                  <div className="p-2 rounded-lg bg-success/10">
-                    <CheckCircle className="h-4 w-4 text-success" />
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold">
-                    {approvalRoutes.filter((r) => r.status === "active").length}
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-gradient-card shadow-md">
-                <CardHeader className="flex flex-row items-center justify-between pb-2">
-                  <CardTitle className="text-sm font-medium text-muted-foreground">
-                    Total Employees
-                  </CardTitle>
-                  <div className="p-2 rounded-lg bg-primary/10">
-                    <Users className="h-4 w-4 text-primary" />
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold">{approvalRoutes.length}</div>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Approval Routes Table */}
-            <Card className="bg-gradient-card shadow-lg">
-              <CardHeader>
-                <div className="flex items-center gap-2">
-                  <Route className="h-5 w-5 text-primary" />
-                  <div>
-                    <CardTitle>Approval Routes</CardTitle>
-                    <CardDescription>
-                      Configure approval workflows for each employee
-                    </CardDescription>
-                  </div>
-                </div>
+          <div className="p-6">
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base font-medium">
+                  Approval routes are the specific sequence of approvals assigned to each employee
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="rounded-lg border overflow-hidden bg-background">
+                <div className="text-sm text-muted-foreground mb-4">
+                  (Identify the number of approvals assigned to each employee)
+                </div>
+                <div className="rounded-md border">
                   <Table>
                     <TableHeader>
                       <TableRow className="bg-muted/50">
-                        <TableHead className="font-semibold">Employee ID</TableHead>
-                        <TableHead className="font-semibold">Employee Name</TableHead>
-                        <TableHead className="font-semibold">Department</TableHead>
-                        <TableHead className="font-semibold">Approval Steps</TableHead>
-                        <TableHead className="font-semibold">Status</TableHead>
-                        <TableHead className="font-semibold">Actions</TableHead>
+                        <TableHead className="w-[100px]">Employee ID</TableHead>
+                        <TableHead>Employee Name</TableHead>
+                        <TableHead>Department</TableHead>
+                        <TableHead>Approval Steps</TableHead>
+                        <TableHead className="w-[100px]">Status</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {approvalRoutes.map((route) => (
-                        <TableRow key={route.id} className="hover:bg-muted/30">
+                        <TableRow key={route.id}>
                           <TableCell className="font-mono text-sm">
                             {route.employeeId}
                           </TableCell>
@@ -191,16 +121,6 @@ const AdminDashboard = () => {
                             >
                               {route.status}
                             </Badge>
-                          </TableCell>
-                          <TableCell>
-                            <div className="flex gap-2">
-                              <Button size="sm" variant="outline">
-                                Edit
-                              </Button>
-                              <Button size="sm" variant="outline">
-                                View
-                              </Button>
-                            </div>
                           </TableCell>
                         </TableRow>
                       ))}
