@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { UserRole } from "@/types/user";
-import { FileText } from "lucide-react";
 import { toast } from "sonner";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
@@ -25,7 +24,7 @@ const Login = () => {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!selectedRole) {
       toast.error("Please select a role");
       return;
@@ -47,22 +46,18 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-primary/10 flex items-center justify-center p-4">
-      <Card className="w-full max-w-2xl shadow-xl bg-gradient-card">
-        <CardHeader className="text-center pb-8">
-          <div className="flex justify-center mb-4">
-            <div className="h-16 w-16 rounded-2xl bg-gradient-primary flex items-center justify-center shadow-lg">
-              <FileText className="h-8 w-8 text-white" />
-            </div>
-          </div>
-          <CardTitle className="text-3xl font-bold">ApprovalFlow</CardTitle>
-          <CardDescription className="text-base">
-            Select your role and sign in to continue
+      <Card className="w-full max-w-md shadow-2xl border-0 rounded-2xl bg-background/70 backdrop-blur-sm">
+        <CardHeader className="text-center pb-6">
+          <CardTitle className="text-2xl font-bold">Welcome Back</CardTitle>
+          <CardDescription className="text-sm">
+            Sign in to continue
           </CardDescription>
         </CardHeader>
+
         <CardContent className="space-y-6">
           {/* Role dropdown */}
           <div className="space-y-2">
-            <Label className="text-sm font-semibold">Select Role</Label>
+            <Label className="text-sm font-medium">Select Role</Label>
             <Select onValueChange={(val) => setSelectedRole(val as UserRole)}>
               <SelectTrigger className="h-11">
                 <SelectValue placeholder="Choose a role" />
@@ -106,8 +101,8 @@ const Login = () => {
             </Button>
           </form>
 
-          <p className="text-center text-sm text-muted-foreground">
-            Demo: Use any email/password combination
+          <p className="text-center text-xs text-muted-foreground">
+            Use any email/password combination for demo login
           </p>
         </CardContent>
       </Card>
